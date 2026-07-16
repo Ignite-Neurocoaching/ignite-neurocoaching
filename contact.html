@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Work With Me | Ignite Neurocoaching</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:     #09151d;
+      --bg2:    #0d1f2d;
+      --bg3:    #12121f;
+      --accent: #e84a2e;
+      --accent2:#c73d24;
+      --text:   #e2cc9c;
+      --muted:  #8a8a9a;
+      --border: rgba(232,74,46,0.18);
+      --glow:   rgba(232,74,46,0.12);
+    }
+
+    @font-face {
+      font-family: 'Milanello';
+      src: url('Milanello.otf') format('opentype');
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    #vortex-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.45;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 60px;
+      background: rgba(9,21,29,0.7);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { display: flex; align-items: center; text-decoration: none; }
+    .nav-logo img { height: 70px; width: auto; mix-blend-mode: screen; opacity: 0.92; }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a {
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-cta {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--accent);
+      padding: 10px 24px;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .nav-cta:hover { background: var(--accent2); transform: translateY(-1px); }
+
+    .page-content { position: relative; z-index: 1; }
+
+    /* HERO */
+    .contact-hero {
+      padding: 160px 60px 60px;
+      border-bottom: 1px solid var(--border);
+    }
+    .contact-hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .contact-hero h1 {
+      font-family: 'Milanello', serif;
+      font-size: clamp(3rem, 5.5vw, 5rem);
+      font-weight: 300;
+      line-height: 1.08;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+    }
+    .contact-hero h1 em { font-style: italic; color: var(--accent); }
+    .contact-hero p {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 580px;
+      line-height: 1.85;
+      margin-bottom: 32px;
+    }
+    .contact-hero .btn-primary {
+      display: inline-block;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--accent);
+      padding: 15px 36px;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .contact-hero .btn-primary:hover {
+      background: var(--accent2);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(232,74,46,0.25);
+    }
+
+    /* THINGS TO KNOW */
+    .things-section {
+      padding: 80px 60px;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+    }
+    .things-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .things-section h2 {
+      font-family: 'Milanello', serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 300;
+      text-transform: uppercase;
+      line-height: 1.12;
+      margin-bottom: 32px;
+    }
+    .things-section h2 em { font-style: italic; color: var(--accent); }
+    .things-section p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 16px;
+    }
+    .things-photo {
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .things-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .things-photo-placeholder {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0.5;
+      text-align: center;
+    }
+
+    /* FORM SECTION */
+    .form-section {
+      padding: 80px 60px;
+      background: var(--bg);
+      scroll-margin-top: 114px;
+    }
+    .form-wrap {
+      display: flex;
+      flex-direction: column;
+      max-width: 1100px;
+      gap: 4px;
+      margin: 0 auto;
+    }
+    .form-left {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+      padding-bottom: 60px;
+      max-width: 680px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .form-left h2 {
+      font-family: 'Milanello', serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 300;
+      text-transform: uppercase;
+      line-height: 1.12;
+      margin-bottom: 24px;
+    }
+    .form-left h2 em { font-style: italic; color: var(--accent); }
+    .form-left p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+    .contact-details {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .contact-detail {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    .contact-form-wrap {
+      display: flex;
+      justify-content: center;
+    }
+    .detail-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
+      background: var(--glow);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    /* FORM */
+    .contact-form {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 44px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      width: 100%;
+      max-width: 680px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .form-field label {
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 13px 15px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+    .form-field input:focus,
+    .form-field select:focus,
+    .form-field textarea:focus { border-color: rgba(232,74,46,0.5); }
+    .form-field select option { background: var(--bg); }
+    .form-field textarea { resize: vertical; min-height: 120px; }
+    .form-submit {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--accent);
+      border: none;
+      padding: 16px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      margin-top: 4px;
+    }
+    .form-submit:hover {
+      background: var(--accent2);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(232,74,46,0.25);
+    }
+
+    /* WHAT HAPPENS NEXT */
+    .next-section {
+      padding: 80px 60px;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+    }
+    .next-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .next-section h2 {
+      font-family: 'Milanello', serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 300;
+      text-transform: uppercase;
+      line-height: 1.12;
+      margin-bottom: 40px;
+    }
+    .next-section h2 em { font-style: italic; color: var(--accent); }
+    .next-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .next-step {
+      background: var(--bg3);
+      padding: 36px 32px;
+    }
+    .step-num {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .step-title {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .next-step p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s, transform 0.7s; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    footer a:hover { color: var(--accent) !important; }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      nav { padding: 18px 24px; flex-wrap: wrap; }
+      .nav-hamburger { display: flex; }
+      .nav-cta { display: none; }
+      .nav-links { display: none; flex-direction: column; gap: 0; width: 100%; order: 3; padding: 8px 0 16px; }
+      .nav-links.open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--border); }
+      .nav-links a { display: block; padding: 14px 0; font-size: 0.88rem; }
+      .nav-mobile-cta {
+        display: block !important;
+        margin-top: 12px;
+        padding: 13px 24px;
+        text-align: center;
+        font-size: 0.82rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--bg) !important;
+        background: var(--accent);
+        border-radius: 2px;
+        text-decoration: none;
+      }
+
+      .contact-hero { padding: 110px 24px 50px; }
+      .contact-hero h1 { font-size: clamp(2.2rem, 9vw, 3.2rem); }
+
+      .things-section { padding: 50px 24px; }
+      .things-inner { grid-template-columns: 1fr; gap: 36px; }
+      .things-photo { aspect-ratio: 3 / 2; }
+
+      .form-section { padding: 50px 24px; }
+      .form-left { grid-template-columns: 1fr; gap: 32px; }
+      .contact-form { padding: 32px 24px; max-width: 100%; }
+      .form-row { grid-template-columns: 1fr; }
+
+      .next-section { padding: 50px 24px; }
+      .next-steps { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="vortex-canvas"></canvas>
+
+<nav>
+  <a href="index.html" class="nav-logo"><img src="flame-logo.svg" alt="Ignite Neurocoaching"></a>
+  <ul class="nav-links">
+    <li><a href="about.html">About</a></li>
+    <li><a href="how-it-works.html">How It Works</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="contact.html" class="nav-mobile-cta" style="display:none;">Work With Me</a></li>
+  </ul>
+  <button class="nav-hamburger" id="nav-toggle" aria-label="Toggle navigation">
+    <span></span><span></span><span></span>
+  </button>
+  <a href="contact.html" class="nav-cta">Work With Me</a>
+</nav>
+
+<div class="page-content">
+
+  <!-- HERO -->
+  <div class="contact-hero">
+    <div class="contact-hero-inner">
+      <h1 class="reveal">Let's get <em>started</em></h1>
+      <p class="reveal">Real talk: this isn't for everyone. But if you know something has to change and you're ready to do the work, let's do it.</p>
+      <a href="#lets-talk" class="btn-primary reveal">Work With Me</a>
+    </div>
+  </div>
+
+  <!-- THINGS TO KNOW -->
+  <div class="things-section">
+    <div class="things-inner">
+      <div class="things-text">
+        <h2 class="reveal">A few things<br>to <em>know</em></h2>
+        <p class="reveal">This work is real and it takes effort. You'll need to be willing to think about things differently and practice new skills. If you're looking for a magic fix or someone to tell you what to do, this isn't it.</p>
+        <p class="reveal">If you're ready to actually engage with your nervous system and build real resilience? Let's go.</p>
+      </div>
+      <div class="things-photo reveal">
+        <img src="firefighter-silhouette-orange-haze.jpg" alt="Firefighter silhouette in orange haze">
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-section" id="lets-talk">
+    <div class="form-wrap">
+      <div class="form-left">
+        <div class="form-left-text">
+          <h2 class="reveal">Let's <em>talk</em></h2>
+          <p class="reveal">The first step is simple. Reach out and let me know what's going on. We'll have a quick conversation to make sure this is the right fit. No pressure. No sales pitch.</p>
+        </div>
+        <div class="contact-details">
+          <div class="contact-detail reveal">
+            <div class="detail-icon">⏱</div>
+            I'll get back to you within 48 hours
+          </div>
+          <div class="contact-detail reveal">
+            <div class="detail-icon">📞</div>
+            Free 20–30 min consultation call
+          </div>
+          <div class="contact-detail reveal">
+            <div class="detail-icon">🔒</div>
+            100% confidential
+          </div>
+          <div class="contact-detail reveal">
+            <div class="detail-icon">✉️</div>
+            <a href="mailto:daradouma@hotmail.com" style="color: var(--muted); text-decoration: none;">daradouma@hotmail.com</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form-wrap">
+      <form id="contact-form" class="contact-form reveal" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-field">
+            <label>First Name</label>
+            <input type="text" placeholder="Your first name" required>
+          </div>
+          <div class="form-field">
+            <label>Last Name</label>
+            <input type="text" placeholder="Your last name" required>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Email Address</label>
+          <input type="email" placeholder="your@email.com" required>
+        </div>
+        <div class="form-field">
+          <label>Phone (optional)</label>
+          <input type="tel" placeholder="Your phone number">
+        </div>
+        <div class="form-field">
+          <label>What brings you here?</label>
+          <textarea placeholder="A few words about what you're dealing with..."></textarea>
+        </div>
+        <div class="form-field">
+          <label>Preferred way to connect</label>
+          <select>
+            <option value="">Select one...</option>
+            <option>Phone call</option>
+            <option>Email</option>
+            <option>Video call</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Best times to reach you</label>
+          <input type="text" placeholder="e.g. weekday mornings, weekend afternoons...">
+        </div>
+        <button type="submit" class="form-submit">Reach Out</button>
+      </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT HAPPENS NEXT -->
+  <div class="next-section">
+    <div class="next-inner">
+    <h2 class="reveal">After you<br>hit <em>send</em></h2>
+    <div class="next-steps">
+      <div class="next-step reveal">
+        <div class="step-num">Step 1</div>
+        <div class="step-title">I'll get back to you</div>
+        <p>Within 48 hours. We'll set up a time to talk, usually a 20–30 minute conversation.</p>
+      </div>
+      <div class="next-step reveal">
+        <div class="step-num">Step 2</div>
+        <div class="step-title">We have a real conversation</div>
+        <p>I'll ask you some questions. You'll ask me some questions. We'll figure out if the Resilience Package is what you need right now.</p>
+      </div>
+      <div class="next-step reveal">
+        <div class="step-num">Step 3</div>
+        <div class="step-title">You decide</div>
+        <p>If it's a fit, we book your first session. If it's not, I'll let you know what might work better. Either way, you'll have a clear sense of what's possible.</p>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer style="background: var(--bg2); border-top: 1px solid var(--border); padding: 60px; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; position: relative; z-index: 1;">
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo" style="display:flex;margin-bottom:16px;"><img src="flame-logo.svg" alt="Ignite Neurocoaching" style="height:70px;mix-blend-mode:screen;opacity:0.92;"></a>
+      <p style="font-size:0.85rem;color:var(--muted);line-height:1.7;max-width:260px;">Nervous system coaching for first responders who want to stay sharp, stay regulated, and stay okay.</p>
+    </div>
+    <div>
+      <h5 style="font-size:0.7rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--text);margin-bottom:20px;">Services</h5>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
+        <li><a href="services.html" style="font-size:0.85rem;color:var(--muted);text-decoration:none;">The Resilience Package</a></li>
+        <li><a href="services.html#speaking" style="font-size:0.85rem;color:var(--muted);text-decoration:none;">Speaking &amp; Consulting</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5 style="font-size:0.7rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--text);margin-bottom:20px;">Learn</h5>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
+        <li><a href="how-it-works.html" style="font-size:0.85rem;color:var(--muted);text-decoration:none;">How It Works</a></li>
+        <li><a href="about.html" style="font-size:0.85rem;color:var(--muted);text-decoration:none;">About Dara</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5 style="font-size:0.7rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--text);margin-bottom:20px;">Connect</h5>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
+        <li><a href="contact.html" style="font-size:0.85rem;color:var(--muted);text-decoration:none;">Work With Me</a></li>
+        <li><a href="mailto:daradouma@hotmail.com" style="font-size:0.85rem;color:var(--muted);text-decoration:none;">daradouma@hotmail.com</a></li>
+      </ul>
+    </div>
+  </footer>
+  <div style="background:var(--bg2);border-top:1px solid var(--border);padding:20px 60px;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;">
+    <p style="font-size:0.78rem;color:var(--muted);">© 2026 Ignite Neurocoaching. All rights reserved.</p>
+    <p style="color:var(--accent);font-size:0.75rem;letter-spacing:0.1em;">REWIRE · IGNITE · TRANSFORM</p>
+  </div>
+
+</div>
+
+<script>
+  (function() {
+    const canvasEl = document.getElementById('vortex-canvas');
+    const gl = canvasEl.getContext('webgl') || canvasEl.getContext('experimental-webgl');
+    if (!gl) return;
+    const vsSource = `precision mediump float; attribute vec2 a_position; varying vec2 vUv; void main() { vUv = .5 * (a_position + 1.); gl_Position = vec4(a_position, 0.0, 1.0); }`;
+    const fsSource = `
+      precision mediump float;
+      varying vec2 vUv;
+      uniform float u_time; uniform float u_ratio; uniform vec2 u_pointer_position; uniform float u_scroll_progress;
+      vec2 rotate(vec2 uv, float th) { return mat2(cos(th), sin(th), -sin(th), cos(th)) * uv; }
+      float neuro_shape(vec2 uv, float t, float p) {
+        vec2 sine_acc = vec2(0.); vec2 res = vec2(0.); float scale = 8.;
+        for (int j = 0; j < 15; j++) { uv = rotate(uv, 1.); sine_acc = rotate(sine_acc, 1.); vec2 layer = uv * scale + float(j) + sine_acc - t; sine_acc += sin(layer) + 2.4 * p; res += (.5 + .5 * cos(layer)) / scale; scale *= (1.2); }
+        return res.x + res.y;
+      }
+      void main() {
+        vec2 uv = .5 * vUv; uv.x *= u_ratio;
+        vec2 pointer = vUv - u_pointer_position; pointer.x *= u_ratio;
+        float p = clamp(length(pointer), 0., 1.); p = .5 * pow(1. - p, 2.);
+        float t = .001 * u_time; float noise = neuro_shape(uv, t, p);
+        noise = 1.2 * pow(noise, 3.); noise += pow(noise, 10.); noise = max(.0, noise - .5); noise *= (1. - length(vUv - .5));
+        vec3 color = vec3(0.91, 0.29, 0.18);
+        color = mix(color, vec3(0.95, 0.58, 0.05), 0.32 + 0.16 * sin(2.0 * u_scroll_progress + 1.2));
+        color += vec3(0.50, 0.06, 0.0) * sin(2.0 * u_scroll_progress + 1.5);
+        color = color * noise; gl_FragColor = vec4(color, noise);
+      }`;
+    function cs(gl,src,type){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);return s;}
+    const vs=cs(gl,vsSource,gl.VERTEX_SHADER), fs=cs(gl,fsSource,gl.FRAGMENT_SHADER);
+    const prog=gl.createProgram(); gl.attachShader(prog,vs); gl.attachShader(prog,fs); gl.linkProgram(prog); gl.useProgram(prog);
+    const buf=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,buf); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    const pos=gl.getAttribLocation(prog,'a_position'); gl.enableVertexAttribArray(pos); gl.vertexAttribPointer(pos,2,gl.FLOAT,false,0,0);
+    const uTime=gl.getUniformLocation(prog,'u_time'), uRatio=gl.getUniformLocation(prog,'u_ratio'), uPtr=gl.getUniformLocation(prog,'u_pointer_position'), uScroll=gl.getUniformLocation(prog,'u_scroll_progress');
+    const ptr={x:.5,y:.5,tX:.5,tY:.5};
+    function resize(){const d=Math.min(window.devicePixelRatio,2);canvasEl.width=window.innerWidth*d;canvasEl.height=window.innerHeight*d;gl.viewport(0,0,canvasEl.width,canvasEl.height);gl.uniform1f(uRatio,canvasEl.width/canvasEl.height);}
+    resize(); window.addEventListener('resize',resize);
+    window.addEventListener('pointermove',e=>{ptr.tX=e.clientX/window.innerWidth;ptr.tY=e.clientY/window.innerHeight;});
+    gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
+    function render(){ptr.x+=(ptr.tX-ptr.x)*.2;ptr.y+=(ptr.tY-ptr.y)*.2;gl.uniform1f(uTime,performance.now());gl.uniform2f(uPtr,ptr.x,1-ptr.y);gl.uniform1f(uScroll,window.scrollY/(2*window.innerHeight));gl.drawArrays(gl.TRIANGLE_STRIP,0,4);requestAnimationFrame(render);}
+    render();
+  })();
+
+  document.querySelectorAll('.reveal').forEach(el => {
+    new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { setTimeout(()=>e.target.classList.add('visible'),80); } });
+    }, { threshold: 0.1 }).observe(el);
+  });
+
+  document.getElementById('nav-toggle').addEventListener('click', function() {
+    this.classList.toggle('open');
+    document.querySelector('.nav-links').classList.toggle('open');
+  });
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.form-submit');
+    btn.textContent = '✓ Message Received!';
+    btn.style.background = '#c73d24';
+    btn.disabled = true;
+    setTimeout(() => { btn.textContent = 'Reach Out'; btn.style.background = ''; btn.disabled = false; e.target.reset(); }, 3000);
+  }
+</script>
+</body>
+</html>

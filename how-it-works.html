@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How It Works | Ignite Neurocoaching</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:     #09151d;
+      --bg2:    #0d1f2d;
+      --bg3:    #12121f;
+      --accent: #e84a2e;
+      --accent2:#c73d24;
+      --text:   #e2cc9c;
+      --muted:  #8a8a9a;
+      --border: rgba(232,74,46,0.18);
+      --glow:   rgba(232,74,46,0.12);
+    }
+
+    @font-face {
+      font-family: 'Milanello';
+      src: url('Milanello.otf') format('opentype');
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    #vortex-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.45;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 60px;
+      background: rgba(9,21,29,0.7);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { display: flex; align-items: center; text-decoration: none; }
+    .nav-logo img { height: 70px; width: auto; mix-blend-mode: screen; opacity: 0.92; }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a {
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+    .nav-cta {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--accent);
+      padding: 10px 24px;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .nav-cta:hover { background: var(--accent2); transform: translateY(-1px); }
+
+    .page-content { position: relative; z-index: 1; }
+
+    /* HERO */
+    .hiw-hero {
+      padding: 160px 60px 80px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hiw-hero h1 {
+      font-family: 'Milanello', serif;
+      font-size: clamp(3rem, 5.5vw, 5rem);
+      font-weight: 300;
+      line-height: 1.08;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+    }
+    .hiw-hero h1 em { font-style: italic; color: var(--accent); }
+    .hiw-hero p {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 540px;
+      line-height: 1.85;
+    }
+
+    /* BEFORE */
+    .before-section {
+      padding: 80px 60px;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .before-section h2 {
+      font-family: 'Milanello', serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 300;
+      text-transform: uppercase;
+      line-height: 1.12;
+      margin-bottom: 24px;
+    }
+    .before-section h2 em { font-style: italic; color: var(--accent); }
+    .before-section p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 16px;
+    }
+    .btn-primary {
+      display: inline-block;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--accent);
+      padding: 15px 36px;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      background: var(--accent2);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(232,74,46,0.25);
+    }
+    .before-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 4px;
+      padding: 40px 44px;
+    }
+    .before-card blockquote {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* SESSIONS */
+    .sessions-section {
+      padding: 80px 60px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .sessions-section h2 {
+      font-family: 'Milanello', serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 300;
+      text-transform: uppercase;
+      line-height: 1.12;
+      margin-bottom: 16px;
+    }
+    .sessions-section h2 em { font-style: italic; color: var(--accent); }
+    .sessions-section > p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.85;
+      max-width: 640px;
+      margin-bottom: 48px;
+    }
+    .phases-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .phase-card {
+      background: var(--bg2);
+      padding: 40px 36px;
+    }
+    .phase-number {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .phase-title {
+      font-family: 'Milanello', serif;
+      font-size: 1.5rem;
+      font-weight: 300;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .phase-sessions {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+    .phase-card p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    /* AFTER */
+    .after-section {
+      padding: 80px 60px;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+    }
+    .after-section h2 {
+      font-family: 'Milanello', serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 300;
+      text-transform: uppercase;
+      line-height: 1.12;
+      margin-bottom: 16px;
+    }
+    .after-section h2 em { font-style: italic; color: var(--accent); }
+    .after-section > p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.85;
+      max-width: 640px;
+      margin-bottom: 40px;
+    }
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .option-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 36px 32px;
+    }
+    .option-label {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .option-title {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .option-card p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* CONFIDENTIALITY */
+    .conf-section {
+      padding: 80px 60px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .conf-section h2 {
+      font-family: 'Milanello', serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 300;
+      text-transform: uppercase;
+      line-height: 1.12;
+      margin-bottom: 24px;
+    }
+    .conf-section h2 em { font-style: italic; color: var(--accent); }
+    .conf-section p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 16px;
+    }
+    .conf-pills {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .conf-pill {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 0.88rem;
+      color: var(--text);
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 16px 20px;
+    }
+    .conf-pill::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* FAQ */
+    .faq-section {
+      padding: 80px 60px;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+    }
+    .faq-section h2 {
+      font-family: 'Milanello', serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 300;
+      text-transform: uppercase;
+      line-height: 1.12;
+      margin-bottom: 48px;
+    }
+    .faq-section h2 em { font-style: italic; color: var(--accent); }
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .faq-item {
+      background: var(--bg3);
+      padding: 32px 36px;
+    }
+    .faq-q {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .faq-a {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    /* CTA */
+    .hiw-cta {
+      padding: 100px 60px;
+      background: var(--bg);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hiw-cta::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232,74,46,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hiw-cta h2 {
+      font-family: 'Milanello', serif;
+      font-size: clamp(2.2rem, 4vw, 3.6rem);
+      font-weight: 300;
+      text-transform: uppercase;
+      line-height: 1.1;
+      margin-bottom: 18px;
+      position: relative;
+      z-index: 1;
+    }
+    .hiw-cta h2 em { font-style: italic; color: var(--accent); }
+    .hiw-cta p {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 440px;
+      margin: 0 auto 40px;
+      line-height: 1.8;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 60px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 60px;
+      position: relative;
+      z-index: 1;
+    }
+    .footer-brand .nav-logo { display: flex; margin-bottom: 16px; }
+    .footer-brand p { font-size: 0.85rem; color: var(--muted); line-height: 1.7; max-width: 260px; }
+    .footer-col h5 {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul a { font-size: 0.85rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-col ul a:hover { color: var(--accent); }
+    .footer-bottom {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 20px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .footer-bottom p { font-size: 0.78rem; color: var(--muted); }
+
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      nav { padding: 18px 24px; flex-wrap: wrap; }
+      .nav-hamburger { display: flex; }
+      .nav-cta { display: none; }
+      .nav-links { display: none; flex-direction: column; gap: 0; width: 100%; order: 3; padding: 8px 0 16px; }
+      .nav-links.open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--border); }
+      .nav-links a { display: block; padding: 14px 0; font-size: 0.88rem; }
+      .nav-mobile-cta {
+        display: block !important;
+        margin-top: 12px;
+        padding: 13px 24px;
+        text-align: center;
+        font-size: 0.82rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--bg) !important;
+        background: var(--accent);
+        border-radius: 2px;
+        text-decoration: none;
+      }
+
+      .hiw-hero { padding: 110px 24px 50px; }
+      .hiw-hero h1 { font-size: clamp(2.2rem, 9vw, 3.2rem); }
+
+      .before-section { grid-template-columns: 1fr; gap: 32px; padding: 60px 24px; }
+
+      .sessions-section { padding: 60px 24px; }
+      .phases-grid { grid-template-columns: 1fr; }
+
+      .after-section { padding: 60px 24px; }
+      .options-grid { grid-template-columns: 1fr; }
+
+      .conf-section { grid-template-columns: 1fr; gap: 32px; padding: 60px 24px; }
+
+      .faq-section { padding: 60px 24px; }
+      .faq-grid { grid-template-columns: 1fr; }
+
+      .hiw-cta { padding: 70px 24px; }
+
+      footer { grid-template-columns: 1fr 1fr; gap: 36px; padding: 40px 24px; }
+      .footer-brand { grid-column: 1 / -1; }
+      .footer-bottom { padding: 16px 24px; flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="vortex-canvas"></canvas>
+
+<nav>
+  <a href="index.html" class="nav-logo"><img src="flame-logo.svg" alt="Ignite Neurocoaching"></a>
+  <ul class="nav-links">
+    <li><a href="about.html">About</a></li>
+    <li><a href="how-it-works.html" class="active">How It Works</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="contact.html" class="nav-mobile-cta" style="display:none;">Work With Me</a></li>
+  </ul>
+  <button class="nav-hamburger" id="nav-toggle" aria-label="Toggle navigation">
+    <span></span><span></span><span></span>
+  </button>
+  <a href="contact.html" class="nav-cta">Work With Me</a>
+</nav>
+
+<div class="page-content">
+
+  <!-- HERO -->
+  <div class="hiw-hero">
+    <h1 class="reveal">The <em>process</em></h1>
+    <p class="reveal">What to expect from start to finish.</p>
+  </div>
+
+  <!-- BEFORE FIRST SESSION -->
+  <div class="before-section">
+    <div>
+      <h2 class="reveal">Let's make sure<br>this is <em>right</em></h2>
+      <p class="reveal">Before we book anything, we have a quick conversation. No obligation. Just a chance for me to understand what you're dealing with and for you to know what you're getting into.</p>
+      <p class="reveal">This isn't therapy intake. It's just real talk. You tell me what's going on. I tell you whether I think the Resilience Package is the right fit. If it is, we move forward. If it's not, I'll point you toward something that might work better.</p>
+      <br>
+      <a href="contact.html#lets-talk" class="btn-primary reveal">Book a Consultation Call</a>
+    </div>
+    <div class="before-card reveal">
+      <blockquote>"Before your first session, we'll spend 20–30 minutes talking. No pressure. No pitch. Just two people figuring out if this makes sense."</blockquote>
+    </div>
+  </div>
+
+  <!-- THE SIX SESSIONS -->
+  <div class="sessions-section">
+    <h2 class="reveal">Here's what <em>happens</em></h2>
+    <p class="reveal">Six sessions. Each one builds on the last. You're working through a workbook throughout that ties it all together, something you can reference anytime you need it.</p>
+    <div class="phases-grid">
+      <div class="phase-card reveal">
+        <div class="phase-number">Phase 1</div>
+        <div class="phase-title">Understand</div>
+        <div class="phase-sessions">Sessions 1–2</div>
+        <p>We dig into what's actually happening in your nervous system. Polyvagal theory, how trauma affects the brain-body connection, why you react the way you do. Real science, no fluff. You'll finally understand why your body does what it does.</p>
+      </div>
+      <div class="phase-card reveal">
+        <div class="phase-number">Phase 2</div>
+        <div class="phase-title">Build</div>
+        <div class="phase-sessions">Sessions 3–4</div>
+        <p>Now we train. Regulation drills. Grounding techniques. Skills you can practice on shift, in your car, at home. Think of it like conditioning. You're building the response before you need it.</p>
+      </div>
+      <div class="phase-card reveal">
+        <div class="phase-number">Phase 3</div>
+        <div class="phase-title">Integrate</div>
+        <div class="phase-sessions">Sessions 5–6</div>
+        <p>We put it all together. You're practicing what you've learned. We're troubleshooting what works and what doesn't for you specifically. By the end, you've got a system that's actually yours.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- AFTER SESSION SIX -->
+  <div class="after-section">
+    <h2 class="reveal">You decide<br>what's <em>next</em></h2>
+    <p class="reveal">After six sessions, you have options. There's no pressure to keep going and no expectation that you need more.</p>
+    <div class="options-grid">
+      <div class="option-card reveal">
+        <div class="option-label">Option 1</div>
+        <div class="option-title">You're Good</div>
+        <p>You've got your toolkit. You feel different. You want to run with it on your own. That's totally valid. You can always reach out for a check-in session later if you need it.</p>
+      </div>
+      <div class="option-card reveal">
+        <div class="option-label">Option 2</div>
+        <div class="option-title">You Want More Support</div>
+        <p>If you want to go deeper or work with a therapist on some stuff, I can connect you with trauma-informed therapists who understand the first responder world. You'll go in with a clearer sense of what you need and why.</p>
+      </div>
+      <div class="option-card reveal">
+        <div class="option-label">Option 3</div>
+        <div class="option-title">Ongoing Coaching</div>
+        <p>Some people want to keep working together. We can figure out what that looks like based on where you're at after the six sessions.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIDENTIALITY -->
+  <div class="conf-section">
+    <div>
+      <h2 class="reveal">Your privacy is<br><em>non-negotiable</em></h2>
+      <p class="reveal">Everything you share is completely confidential. Sessions are between you and me. There's no report to your department, your employer, or anyone else.</p>
+      <p class="reveal">The only time confidentiality gets broken is if you tell me you're planning to hurt yourself or someone else. Otherwise, what you say here stays here.</p>
+      <p class="reveal">You can do sessions in-person or online. Either way, it's private.</p>
+    </div>
+    <div class="conf-pills reveal">
+      <div class="conf-pill">No reporting to your department</div>
+      <div class="conf-pill">No paperwork to your employer</div>
+      <div class="conf-pill">No risk to your career</div>
+      <div class="conf-pill">In-person or online sessions</div>
+      <div class="conf-pill">Your station doesn't need to know</div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq-section">
+    <h2 class="reveal">Common <em>questions</em></h2>
+    <div class="faq-grid">
+      <div class="faq-item reveal">
+        <div class="faq-q">Is this therapy?</div>
+        <div class="faq-a">No. I'm not a licensed therapist, and this isn't therapy. It's coaching focused on nervous system management and building resilience. If you decide you want actual therapy after our sessions, I can refer you to qualified therapists.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Will my department find out?</div>
+        <div class="faq-a">No. Sessions are completely confidential. There's no paperwork going to your employer, your union, or anyone else. Only you know you're doing this.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Can I use my benefits plan?</div>
+        <div class="faq-a">Not yet. Because I'm not a licensed therapist, most benefits plans don't cover coaching. However, if you decide to work with a therapist after our sessions, that's likely covered. I can talk you through your options.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">What if I can't afford six sessions upfront?</div>
+        <div class="faq-a">We can work out a payment plan. Cost shouldn't be the barrier. Let's talk about what works for you.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">What if I'm already seeing a therapist?</div>
+        <div class="faq-a">That's fine. Coaching and therapy can work together. Just let me know so we can make sure we're not duplicating effort.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">How long is each session?</div>
+        <div class="faq-a">Typically 60 minutes. We can adjust based on what works for you.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Can I do sessions online?</div>
+        <div class="faq-a">Yes. Sessions can be in-person or online, whatever works best for you.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">What if I need emergency support?</div>
+        <div class="faq-a">If you're in crisis, this isn't the right place. Please reach out to a crisis line, your local emergency services, or a mental health professional immediately.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="hiw-cta">
+    <h2 class="reveal">Ready to <em>start?</em></h2>
+    <p class="reveal">Reach out and let me know what's going on. We'll figure out together if this is the right fit.</p>
+    <a href="contact.html" class="btn-primary reveal">Work With Me</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo"><img src="flame-logo.svg" alt="Ignite Neurocoaching" style="height:70px;mix-blend-mode:screen;opacity:0.92;"></a>
+      <p>Nervous system coaching for first responders who want to stay sharp, stay regulated, and stay okay.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Services</h5>
+      <ul>
+        <li><a href="services.html">The Resilience Package</a></li>
+        <li><a href="services.html#speaking">Speaking & Consulting</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Learn</h5>
+      <ul>
+        <li><a href="how-it-works.html">How It Works</a></li>
+        <li><a href="about.html">About Dara</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Connect</h5>
+      <ul>
+        <li><a href="contact.html">Work With Me</a></li>
+        <li><a href="mailto:daradouma@hotmail.com">daradouma@hotmail.com</a></li>
+      </ul>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <p>© 2026 Ignite Neurocoaching. All rights reserved.</p>
+    <p style="color: var(--accent); font-size: 0.75rem; letter-spacing: 0.1em;">REWIRE · IGNITE · TRANSFORM</p>
+  </div>
+
+</div>
+
+<script>
+  (function() {
+    const canvasEl = document.getElementById('vortex-canvas');
+    const gl = canvasEl.getContext('webgl') || canvasEl.getContext('experimental-webgl');
+    if (!gl) return;
+    const vsSource = `precision mediump float; attribute vec2 a_position; varying vec2 vUv; void main() { vUv = .5 * (a_position + 1.); gl_Position = vec4(a_position, 0.0, 1.0); }`;
+    const fsSource = `
+      precision mediump float;
+      varying vec2 vUv;
+      uniform float u_time; uniform float u_ratio; uniform vec2 u_pointer_position; uniform float u_scroll_progress;
+      vec2 rotate(vec2 uv, float th) { return mat2(cos(th), sin(th), -sin(th), cos(th)) * uv; }
+      float neuro_shape(vec2 uv, float t, float p) {
+        vec2 sine_acc = vec2(0.); vec2 res = vec2(0.); float scale = 8.;
+        for (int j = 0; j < 15; j++) { uv = rotate(uv, 1.); sine_acc = rotate(sine_acc, 1.); vec2 layer = uv * scale + float(j) + sine_acc - t; sine_acc += sin(layer) + 2.4 * p; res += (.5 + .5 * cos(layer)) / scale; scale *= (1.2); }
+        return res.x + res.y;
+      }
+      void main() {
+        vec2 uv = .5 * vUv; uv.x *= u_ratio;
+        vec2 pointer = vUv - u_pointer_position; pointer.x *= u_ratio;
+        float p = clamp(length(pointer), 0., 1.); p = .5 * pow(1. - p, 2.);
+        float t = .001 * u_time; float noise = neuro_shape(uv, t, p);
+        noise = 1.2 * pow(noise, 3.); noise += pow(noise, 10.); noise = max(.0, noise - .5); noise *= (1. - length(vUv - .5));
+        vec3 color = vec3(0.91, 0.29, 0.18);
+        color = mix(color, vec3(0.95, 0.58, 0.05), 0.32 + 0.16 * sin(2.0 * u_scroll_progress + 1.2));
+        color += vec3(0.50, 0.06, 0.0) * sin(2.0 * u_scroll_progress + 1.5);
+        color = color * noise; gl_FragColor = vec4(color, noise);
+      }`;
+    function cs(gl,src,type){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);return s;}
+    const vs=cs(gl,vsSource,gl.VERTEX_SHADER), fs=cs(gl,fsSource,gl.FRAGMENT_SHADER);
+    const prog=gl.createProgram(); gl.attachShader(prog,vs); gl.attachShader(prog,fs); gl.linkProgram(prog); gl.useProgram(prog);
+    const buf=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,buf); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    const pos=gl.getAttribLocation(prog,'a_position'); gl.enableVertexAttribArray(pos); gl.vertexAttribPointer(pos,2,gl.FLOAT,false,0,0);
+    const uTime=gl.getUniformLocation(prog,'u_time'), uRatio=gl.getUniformLocation(prog,'u_ratio'), uPtr=gl.getUniformLocation(prog,'u_pointer_position'), uScroll=gl.getUniformLocation(prog,'u_scroll_progress');
+    const ptr={x:.5,y:.5,tX:.5,tY:.5};
+    function resize(){const d=Math.min(window.devicePixelRatio,2);canvasEl.width=window.innerWidth*d;canvasEl.height=window.innerHeight*d;gl.viewport(0,0,canvasEl.width,canvasEl.height);gl.uniform1f(uRatio,canvasEl.width/canvasEl.height);}
+    resize(); window.addEventListener('resize',resize);
+    window.addEventListener('pointermove',e=>{ptr.tX=e.clientX/window.innerWidth;ptr.tY=e.clientY/window.innerHeight;});
+    gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
+    function render(){ptr.x+=(ptr.tX-ptr.x)*.2;ptr.y+=(ptr.tY-ptr.y)*.2;gl.uniform1f(uTime,performance.now());gl.uniform2f(uPtr,ptr.x,1-ptr.y);gl.uniform1f(uScroll,window.scrollY/(2*window.innerHeight));gl.drawArrays(gl.TRIANGLE_STRIP,0,4);requestAnimationFrame(render);}
+    render();
+  })();
+
+  document.querySelectorAll('.reveal').forEach(el => {
+    new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { setTimeout(()=>e.target.classList.add('visible'),80); } });
+    }, { threshold: 0.1 }).observe(el);
+  });
+
+  document.getElementById('nav-toggle').addEventListener('click', function() {
+    this.classList.toggle('open');
+    document.querySelector('.nav-links').classList.toggle('open');
+  });
+</script>
+</body>
+</html>

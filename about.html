@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Dara | Ignite Neurocoaching</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:     #09151d;
+      --bg2:    #0d1f2d;
+      --bg3:    #12121f;
+      --accent: #e84a2e;
+      --accent2:#c73d24;
+      --text:   #e2cc9c;
+      --muted:  #8a8a9a;
+      --border: rgba(232,74,46,0.18);
+      --glow:   rgba(232,74,46,0.12);
+    }
+
+    @font-face {
+      font-family: 'Milanello';
+      src: url('Milanello.otf') format('opentype');
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* VORTEX */
+    #vortex-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.45;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 60px;
+      background: rgba(9,21,29,0.7);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { display: flex; align-items: center; text-decoration: none; }
+    .nav-logo img { height: 70px; width: auto; mix-blend-mode: screen; opacity: 0.92; }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a {
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+    .nav-cta {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--accent);
+      padding: 10px 24px;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .nav-cta:hover { background: var(--accent2); transform: translateY(-1px); }
+
+    /* PAGE CONTENT */
+    .page-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* HERO */
+    .about-hero {
+      padding: 160px 60px 80px;
+      max-width: 900px;
+    }
+    .about-hero h1 {
+      font-family: 'Milanello', serif;
+      font-size: clamp(3rem, 5.5vw, 5rem);
+      font-weight: 300;
+      line-height: 1.08;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+    }
+    .about-hero h1 em { font-style: italic; color: var(--accent); }
+    .about-hero p {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 600px;
+      line-height: 1.85;
+    }
+
+    /* INTRO GRID */
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 0.6fr 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg2);
+    }
+
+    .intro-photo {
+      border-right: 1px solid var(--border);
+      padding: 40px 32px;
+    }
+    .intro-photo-placeholder {
+      width: 100%;
+      height: 100%;
+      min-height: 440px;
+      overflow: hidden;
+    }
+    .intro-photo-placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 22%;
+      display: block;
+    }
+
+    .intro-text {
+      padding: 70px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .intro-text h2 {
+      font-family: 'Milanello', serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 300;
+      line-height: 1.12;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .intro-text h2 em { font-style: italic; color: var(--accent); }
+    .intro-text p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 16px;
+    }
+
+    /* WHAT I BRING */
+    .bring-section {
+      padding: 80px 60px;
+      background: var(--bg);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      border-top: 1px solid var(--border);
+    }
+    .bring-section h2 {
+      font-family: 'Milanello', serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 300;
+      text-transform: uppercase;
+      line-height: 1.12;
+      margin-bottom: 24px;
+    }
+    .bring-section h2 em { font-style: italic; color: var(--accent); }
+    .bring-section p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 16px;
+    }
+
+    .bring-quote {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 4px;
+      padding: 40px 44px;
+    }
+    .bring-quote blockquote {
+      font-family: 'Milanello', serif;
+      font-size: 1.5rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.45;
+      text-transform: uppercase;
+    }
+
+    /* CREDENTIALS */
+    .credentials-section {
+      padding: 80px 60px;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+    }
+    .credentials-section h2 {
+      font-family: 'Milanello', serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 300;
+      text-transform: uppercase;
+      line-height: 1.12;
+      margin-bottom: 40px;
+    }
+    .credentials-section h2 em { font-style: italic; color: var(--accent); }
+    .credentials-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .cred-item {
+      background: var(--bg2);
+      padding: 32px 36px;
+    }
+    .cred-title {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+    .cred-school {
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    /* CONFIDENTIALITY */
+    .confidentiality-section {
+      padding: 80px 60px;
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .confidentiality-section h2 {
+      font-family: 'Milanello', serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 300;
+      text-transform: uppercase;
+      line-height: 1.12;
+      margin-bottom: 24px;
+    }
+    .confidentiality-section h2 em { font-style: italic; color: var(--accent); }
+    .confidentiality-section p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 16px;
+    }
+    .confidentiality-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 32px;
+    }
+    .pill {
+      flex: 1 1 0;
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text);
+      background: var(--glow);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 16px 20px;
+    }
+
+    /* CTA */
+    .about-cta {
+      padding: 100px 60px;
+      background: var(--bg);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .about-cta::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232,74,46,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .about-cta h2 {
+      font-family: 'Milanello', serif;
+      font-size: clamp(2.2rem, 4vw, 3.6rem);
+      font-weight: 300;
+      text-transform: uppercase;
+      line-height: 1.1;
+      margin-bottom: 18px;
+      position: relative;
+      z-index: 1;
+    }
+    .about-cta h2 em { font-style: italic; color: var(--accent); }
+    .about-cta p {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 440px;
+      margin: 0 auto 40px;
+      line-height: 1.8;
+      position: relative;
+      z-index: 1;
+    }
+    .btn-primary {
+      display: inline-block;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--accent);
+      padding: 15px 36px;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      z-index: 1;
+    }
+    .btn-primary:hover {
+      background: var(--accent2);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(232,74,46,0.25);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 60px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 60px;
+      position: relative;
+      z-index: 1;
+    }
+    .footer-brand .nav-logo { display: flex; margin-bottom: 16px; }
+    .footer-brand p { font-size: 0.85rem; color: var(--muted); line-height: 1.7; max-width: 260px; }
+    .footer-col h5 {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul a { font-size: 0.85rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-col ul a:hover { color: var(--accent); }
+    .footer-bottom {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 20px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .footer-bottom p { font-size: 0.78rem; color: var(--muted); }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* HAMBURGER */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      nav { padding: 18px 24px; flex-wrap: wrap; }
+      .nav-hamburger { display: flex; }
+      .nav-cta { display: none; }
+      .nav-links { display: none; flex-direction: column; gap: 0; width: 100%; order: 3; padding: 8px 0 16px; }
+      .nav-links.open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--border); }
+      .nav-links a { display: block; padding: 14px 0; font-size: 0.88rem; }
+      .nav-mobile-cta {
+        display: block !important;
+        margin-top: 12px;
+        padding: 13px 24px;
+        text-align: center;
+        font-size: 0.82rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--bg) !important;
+        background: var(--accent);
+        border-radius: 2px;
+        text-decoration: none;
+      }
+
+      .about-hero { padding: 110px 24px 50px; }
+      .about-hero h1 { font-size: clamp(2.2rem, 9vw, 3.2rem); }
+      .about-hero p { font-size: 1rem; }
+
+      .intro-grid { grid-template-columns: 1fr; }
+      .intro-photo { border-right: none; border-bottom: 1px solid var(--border); }
+      .intro-photo-placeholder { min-height: 280px; }
+      .intro-text { padding: 40px 24px; }
+
+      .bring-section { grid-template-columns: 1fr; gap: 36px; padding: 60px 24px; }
+      .credentials-section { padding: 60px 24px; }
+      .credentials-grid { grid-template-columns: 1fr; }
+
+      .confidentiality-section { padding: 60px 24px; }
+      .confidentiality-pills { gap: 8px; }
+
+      .about-cta { padding: 70px 24px; }
+
+      footer { grid-template-columns: 1fr 1fr; gap: 36px; padding: 40px 24px; }
+      .footer-brand { grid-column: 1 / -1; }
+      .footer-bottom { padding: 16px 24px; flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="vortex-canvas"></canvas>
+
+<nav>
+  <a href="index.html" class="nav-logo"><img src="flame-logo.svg" alt="Ignite Neurocoaching"></a>
+  <ul class="nav-links">
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="how-it-works.html">How It Works</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="contact.html" class="nav-mobile-cta" style="display:none;">Work With Me</a></li>
+  </ul>
+  <button class="nav-hamburger" id="nav-toggle" aria-label="Toggle navigation">
+    <span></span><span></span><span></span>
+  </button>
+  <a href="contact.html" class="nav-cta">Work With Me</a>
+</nav>
+
+<div class="page-content">
+
+  <!-- HERO -->
+  <div class="about-hero">
+    <h1 class="reveal">I've been in<br>the <em>thick of it</em></h1>
+    <p class="reveal">Seventeen years as a firefighter, including on one of the busiest trucks in Canada, downtown Toronto. A lot of training in trauma and nervous systems. And enough street credibility to know what you're really dealing with.</p>
+  </div>
+
+  <!-- INTRO: WHY I DO THIS -->
+  <div class="intro-grid">
+    <div class="intro-photo reveal">
+      <div class="intro-photo-placeholder">
+        <img src="dara-headshot.jpg" alt="Dara Douma">
+      </div>
+    </div>
+    <div class="intro-text">
+      <h2 class="reveal">Why I <em>do this</em></h2>
+      <p class="reveal">I got on the job seventeen years ago thinking I'd seen hard things. I hadn't.</p>
+      <p class="reveal">Over the years, I've been first on scene at situations I can't describe. I've worked with some of the best firefighters in the country. And I've watched a lot of them slowly break under the weight of it all. Not because they're weak. Because nobody gave them the tools to handle what their bodies do after the calls that stay with you.</p>
+      <p class="reveal">I've also done a lot of work outside firefighting. I was a teacher for ten years, working with refugees and newcomers, people living with real trauma trying to function in an academic setting. I spent years in foster parenting, learning how trauma reshapes a nervous system from childhood on. I did certification work in trauma-informed approaches, both for parenting and therapeutic settings.</p>
+      <p class="reveal">All of that pointed to the same thing: most people don't understand what's actually happening in their bodies. And nobody is teaching first responders how to manage it before they break.</p>
+      <p class="reveal">So I'm doing that now. And I'm currently completing a Master's degree so I can eventually offer therapy directly. For now, I coach, and I refer to trauma-informed therapists when that's what someone needs.</p>
+    </div>
+  </div>
+
+  <!-- WHAT I BRING -->
+  <div class="bring-section">
+    <div>
+      <h2 class="reveal">I've lived <em>this</em></h2>
+      <p class="reveal">I'm not a therapist explaining concepts from textbooks. I'm a firefighter who's seen what chronic stress does to your nervous system over time. Who's watched good people deteriorate because they had no framework for what was happening to them.</p>
+      <p class="reveal">I've done training in trauma-informed approaches, polyvagal theory, and nervous system regulation. I understand the neurobiology. But I also understand the job. The calls. The downtime between the chaos. The way it follows you home. The pressure to be fine.</p>
+      <p class="reveal">I get the culture. I know that admitting something's wrong feels like admitting weakness. Which is why this isn't about admitting anything. It's about building skills.</p>
+      <p class="reveal">And I'm not going anywhere. I'm not one of your chiefs or someone looking to change the system. I'm just someone who knows the world and wants to help people stay okay in it.</p>
+      <p class="reveal">My job is to take the neuroscience geek talk, translate it into plain language, and help you actually use it. No jargon. No textbook explanations. Just real tools that work in the real world you're living in.</p>
+    </div>
+    <div class="bring-quote reveal">
+      <blockquote>"This isn't about fixing you. You're not broken. It's about giving you tools nobody bothered to teach you."</blockquote>
+    </div>
+  </div>
+
+  <!-- CREDENTIALS -->
+  <div class="credentials-section">
+    <h2 class="reveal">Training &amp; <em>credentials</em></h2>
+    <div class="credentials-grid">
+      <div class="cred-item reveal">
+        <div class="cred-title">Traumatic Stress Studies Certificate</div>
+        <div class="cred-school">Trauma Research Foundation</div>
+      </div>
+      <div class="cred-item reveal">
+        <div class="cred-title">Advanced Certificate in Child and Youth Mental Health Treatment</div>
+        <div class="cred-school">Institute of Child Psychology</div>
+      </div>
+      <div class="cred-item reveal">
+        <div class="cred-title">Honours BA + Peace &amp; Conflict Studies Certificate</div>
+        <div class="cred-school">University of Waterloo</div>
+      </div>
+      <div class="cred-item reveal">
+        <div class="cred-title">Master's Program (in progress)</div>
+        <div class="cred-school">Pursuing licensure for direct therapy</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIDENTIALITY -->
+  <div class="confidentiality-section">
+    <h2 class="reveal">Completely<br><em>confidential</em></h2>
+    <p class="reveal">I know you need to know this conversation is completely confidential. That nobody at your station needs to know you're doing this. That there's no paperwork trailing you, no risk to your career.</p>
+    <p class="reveal">All of that is true. Sessions are one-on-one and confidential. What you share doesn't get reported to your department, your employer, or anyone else.</p>
+    <p class="reveal">This is your space to be completely yourself. No filter. No performance. Just you and real solutions.</p>
+    <div class="confidentiality-pills reveal">
+      <span class="pill">One-on-one sessions</span>
+      <span class="pill">100% confidential</span>
+      <span class="pill">Flexible scheduling</span>
+      <span class="pill">In-person or online</span>
+      <span class="pill">First responder focused</span>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="about-cta">
+    <h2 class="reveal">Let's <em>talk</em></h2>
+    <p class="reveal">Questions? Want to know if this is right for you? Reach out. No obligation, no pressure.</p>
+    <a href="contact.html#lets-talk" class="btn-primary reveal">Get in Touch</a>
+    <p class="reveal" style="margin-top: 24px; font-size: 0.85rem;">Or email directly: <a href="mailto:daradouma@hotmail.com" style="color: var(--accent); text-decoration: none;">daradouma@hotmail.com</a></p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo"><img src="flame-logo.svg" alt="Ignite Neurocoaching" style="height:70px;mix-blend-mode:screen;opacity:0.92;"></a>
+      <p>Nervous system coaching for first responders who want to stay sharp, stay regulated, and stay okay.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Services</h5>
+      <ul>
+        <li><a href="services.html">The Resilience Package</a></li>
+        <li><a href="services.html#speaking">Speaking & Consulting</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Learn</h5>
+      <ul>
+        <li><a href="how-it-works.html">How It Works</a></li>
+        <li><a href="about.html">About Dara</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Connect</h5>
+      <ul>
+        <li><a href="contact.html">Work With Me</a></li>
+        <li><a href="mailto:daradouma@hotmail.com">daradouma@hotmail.com</a></li>
+      </ul>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <p>© 2026 Ignite Neurocoaching. All rights reserved.</p>
+    <p style="color: var(--accent); font-size: 0.75rem; letter-spacing: 0.1em;">REWIRE · IGNITE · TRANSFORM</p>
+  </div>
+
+</div>
+
+<script>
+  /* VORTEX */
+  (function() {
+    const canvasEl = document.getElementById('vortex-canvas');
+    const gl = canvasEl.getContext('webgl') || canvasEl.getContext('experimental-webgl');
+    if (!gl) return;
+    const vsSource = `precision mediump float; attribute vec2 a_position; varying vec2 vUv; void main() { vUv = .5 * (a_position + 1.); gl_Position = vec4(a_position, 0.0, 1.0); }`;
+    const fsSource = `
+      precision mediump float;
+      varying vec2 vUv;
+      uniform float u_time; uniform float u_ratio; uniform vec2 u_pointer_position; uniform float u_scroll_progress;
+      vec2 rotate(vec2 uv, float th) { return mat2(cos(th), sin(th), -sin(th), cos(th)) * uv; }
+      float neuro_shape(vec2 uv, float t, float p) {
+        vec2 sine_acc = vec2(0.); vec2 res = vec2(0.); float scale = 8.;
+        for (int j = 0; j < 15; j++) { uv = rotate(uv, 1.); sine_acc = rotate(sine_acc, 1.); vec2 layer = uv * scale + float(j) + sine_acc - t; sine_acc += sin(layer) + 2.4 * p; res += (.5 + .5 * cos(layer)) / scale; scale *= (1.2); }
+        return res.x + res.y;
+      }
+      void main() {
+        vec2 uv = .5 * vUv; uv.x *= u_ratio;
+        vec2 pointer = vUv - u_pointer_position; pointer.x *= u_ratio;
+        float p = clamp(length(pointer), 0., 1.); p = .5 * pow(1. - p, 2.);
+        float t = .001 * u_time; float noise = neuro_shape(uv, t, p);
+        noise = 1.2 * pow(noise, 3.); noise += pow(noise, 10.); noise = max(.0, noise - .5); noise *= (1. - length(vUv - .5));
+        vec3 color = vec3(0.91, 0.29, 0.18);
+        color = mix(color, vec3(0.95, 0.58, 0.05), 0.32 + 0.16 * sin(2.0 * u_scroll_progress + 1.2));
+        color += vec3(0.50, 0.06, 0.0) * sin(2.0 * u_scroll_progress + 1.5);
+        color = color * noise; gl_FragColor = vec4(color, noise);
+      }`;
+    function cs(gl,src,type){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);return s;}
+    const vs=cs(gl,vsSource,gl.VERTEX_SHADER), fs=cs(gl,fsSource,gl.FRAGMENT_SHADER);
+    const prog=gl.createProgram(); gl.attachShader(prog,vs); gl.attachShader(prog,fs); gl.linkProgram(prog); gl.useProgram(prog);
+    const buf=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,buf); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    const pos=gl.getAttribLocation(prog,'a_position'); gl.enableVertexAttribArray(pos); gl.vertexAttribPointer(pos,2,gl.FLOAT,false,0,0);
+    const uTime=gl.getUniformLocation(prog,'u_time'), uRatio=gl.getUniformLocation(prog,'u_ratio'), uPtr=gl.getUniformLocation(prog,'u_pointer_position'), uScroll=gl.getUniformLocation(prog,'u_scroll_progress');
+    const ptr={x:.5,y:.5,tX:.5,tY:.5};
+    function resize(){const d=Math.min(window.devicePixelRatio,2);canvasEl.width=window.innerWidth*d;canvasEl.height=window.innerHeight*d;gl.viewport(0,0,canvasEl.width,canvasEl.height);gl.uniform1f(uRatio,canvasEl.width/canvasEl.height);}
+    resize(); window.addEventListener('resize',resize);
+    window.addEventListener('pointermove',e=>{ptr.tX=e.clientX/window.innerWidth;ptr.tY=e.clientY/window.innerHeight;});
+    gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
+    function render(){ptr.x+=(ptr.tX-ptr.x)*.2;ptr.y+=(ptr.tY-ptr.y)*.2;gl.uniform1f(uTime,performance.now());gl.uniform2f(uPtr,ptr.x,1-ptr.y);gl.uniform1f(uScroll,window.scrollY/(2*window.innerHeight));gl.drawArrays(gl.TRIANGLE_STRIP,0,4);requestAnimationFrame(render);}
+    render();
+  })();
+
+  /* NAV TOGGLE */
+  document.getElementById('nav-toggle').addEventListener('click', function() {
+    this.classList.toggle('open');
+    document.querySelector('.nav-links').classList.toggle('open');
+  });
+
+  /* REVEAL */
+  document.querySelectorAll('.reveal').forEach(el => {
+    new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { setTimeout(()=>e.target.classList.add('visible'),80); } });
+    }, { threshold: 0.1 }).observe(el);
+  });
+</script>
+</body>
+</html>

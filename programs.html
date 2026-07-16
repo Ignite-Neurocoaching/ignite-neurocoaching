@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Programs — Ignite Neurocoaching</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:     #09151d;
+      --bg2:    #0d1f2d;
+      --bg3:    #12121f;
+      --accent: #e84a2e;
+      --accent2:#c73d24;
+      --text:   #e2cc9c;
+      --muted:  #8a8a9a;
+      --border: rgba(232,74,46,0.18);
+      --glow:   rgba(232,74,46,0.12);
+    }
+
+    @font-face {
+      font-family: 'Milanello';
+      src: url('Milanello.otf') format('opentype');
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* VORTEX */
+    #vortex-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.45;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 60px;
+      background: rgba(9,21,29,0.7);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { display: flex; align-items: center; text-decoration: none; }
+    .nav-logo img { height: 70px; width: auto; mix-blend-mode: screen; opacity: 0.92; }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a {
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+    .nav-cta {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--accent);
+      padding: 10px 24px;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .nav-cta:hover { background: var(--accent2); transform: translateY(-1px); }
+
+    /* PAGE */
+    .page-content { position: relative; z-index: 1; }
+
+    /* HERO */
+    .programs-hero {
+      padding: 160px 60px 80px;
+      max-width: 860px;
+    }
+    .programs-hero h1 {
+      font-family: 'Milanello', serif;
+      font-size: clamp(3rem, 5.5vw, 5rem);
+      font-weight: 300;
+      line-height: 1.08;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+    }
+    .programs-hero h1 em { font-style: italic; color: var(--accent); }
+    .programs-hero p {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 560px;
+      line-height: 1.85;
+    }
+
+    /* OVERVIEW TABS */
+    .overview-bar {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .overview-tab {
+      padding: 32px 40px;
+      border-right: 1px solid var(--border);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .overview-tab:last-child { border-right: none; }
+    .overview-tab:hover { background: var(--bg3); }
+    .tab-tag {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .tab-name {
+      font-family: 'Milanello', serif;
+      font-size: 1.2rem;
+      font-weight: 300;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+    .tab-duration {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    /* PROGRAM SECTIONS */
+    .program-section {
+      padding: 90px 60px;
+      border-bottom: 1px solid var(--border);
+    }
+    .program-section:nth-child(even) { background: var(--bg2); }
+    .program-section:nth-child(odd)  { background: var(--bg); }
+
+    .program-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+      max-width: 1200px;
+    }
+
+    .program-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--border);
+      padding: 5px 12px;
+      border-radius: 2px;
+      margin-bottom: 20px;
+      background: var(--glow);
+    }
+
+    .program-heading {
+      font-family: 'Milanello', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.1;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .program-heading em { font-style: italic; color: var(--accent); }
+
+    .program-tagline {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 28px;
+      max-width: 480px;
+    }
+
+    .program-detail p {
+      font-size: 0.92rem;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 14px;
+    }
+
+    .program-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .meta-item {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 16px 18px;
+    }
+    .meta-label {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .meta-value {
+      font-size: 0.9rem;
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    .includes-title {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    .includes-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+    .includes-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .includes-list li::before {
+      content: '';
+      display: block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      margin-top: 7px;
+    }
+
+    .program-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--accent);
+      padding: 14px 32px;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .program-cta:hover {
+      background: var(--accent2);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(232,74,46,0.25);
+    }
+
+    .program-photo-placeholder {
+      width: 100%;
+      aspect-ratio: 4/5;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .program-photo-placeholder .photo-icon { font-size: 2.5rem; opacity: 0.3; }
+    .program-photo-placeholder .photo-note { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.08em; opacity: 0.6; }
+
+    /* RIGHT-ALIGNED variant */
+    .program-inner.reverse { direction: rtl; }
+    .program-inner.reverse > * { direction: ltr; }
+
+    /* FAQ */
+    .faq-section {
+      padding: 90px 60px;
+      background: var(--bg2);
+    }
+    .faq-section h2 {
+      font-family: 'Milanello', serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 300;
+      text-transform: uppercase;
+      margin-bottom: 48px;
+    }
+    .faq-section h2 em { font-style: italic; color: var(--accent); }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: 1000px;
+    }
+    .faq-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 28px 30px;
+      transition: border-color 0.3s;
+    }
+    .faq-item:hover { border-color: rgba(232,74,46,0.35); }
+    .faq-q {
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .faq-a {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    /* CTA STRIP */
+    .cta-strip {
+      padding: 100px 60px;
+      background: var(--bg);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-strip::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232,74,46,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-strip h2 {
+      font-family: 'Milanello', serif;
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      font-weight: 300;
+      text-transform: uppercase;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      position: relative; z-index: 1;
+    }
+    .cta-strip h2 em { font-style: italic; color: var(--accent); }
+    .cta-strip p {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 440px;
+      margin: 0 auto 40px;
+      line-height: 1.8;
+      position: relative; z-index: 1;
+    }
+    .btn-primary {
+      display: inline-block;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--accent);
+      padding: 15px 36px;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      position: relative; z-index: 1;
+    }
+    .btn-primary:hover {
+      background: var(--accent2);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(232,74,46,0.25);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 60px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 60px;
+      position: relative; z-index: 1;
+    }
+    .footer-brand p { font-size: 0.85rem; color: var(--muted); line-height: 1.7; max-width: 260px; margin-top: 16px; }
+    .footer-col h5 {
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--text); margin-bottom: 20px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul a { font-size: 0.85rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-col ul a:hover { color: var(--accent); }
+    .footer-bottom {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 20px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative; z-index: 1;
+    }
+    .footer-bottom p { font-size: 0.78rem; color: var(--muted); }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<canvas id="vortex-canvas"></canvas>
+
+<nav>
+  <a href="index.html" class="nav-logo"><img src="flame-logo.svg" alt="Ignite Neurocoaching"></a>
+  <ul class="nav-links">
+    <li><a href="index.html#method">Method</a></li>
+    <li><a href="programs.html" class="active">Programs</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  <a href="contact.html" class="nav-cta">Book a Discovery Call</a>
+</nav>
+
+<div class="page-content">
+
+  <!-- HERO -->
+  <div class="programs-hero">
+    <h1 class="reveal">Choose your<br><em>transformation</em></h1>
+    <p class="reveal">Every program is built on the same neuroscience-backed framework — tailored to where you are, where you want to go, and how you work best.</p>
+  </div>
+
+  <!-- OVERVIEW TABS -->
+  <div class="overview-bar">
+    <a href="#intensive" class="overview-tab reveal">
+      <span class="tab-tag">1:1 Coaching</span>
+      <span class="tab-name">Ignite Intensive</span>
+      <span class="tab-duration">90 days — Deep individual work</span>
+    </a>
+    <a href="#circle" class="overview-tab reveal">
+      <span class="tab-tag">Group Program</span>
+      <span class="tab-name">Mind Mastery Circle</span>
+      <span class="tab-duration">8 weeks — Collective transformation</span>
+    </a>
+    <a href="#executive" class="overview-tab reveal">
+      <span class="tab-tag">Leadership</span>
+      <span class="tab-name">Executive Edge</span>
+      <span class="tab-duration">6 months — High-performance coaching</span>
+    </a>
+  </div>
+
+  <!-- IGNITE INTENSIVE -->
+  <div class="program-section" id="intensive">
+    <div class="program-inner">
+      <div>
+        <div class="program-label reveal">✦ 1:1 Coaching</div>
+        <h2 class="program-heading reveal">Ignite <em>Intensive</em></h2>
+        <p class="program-tagline reveal">Deep, personalised 1:1 coaching over 90 days — for individuals ready for profound, permanent change.</p>
+
+        <div class="program-meta reveal">
+          <div class="meta-item">
+            <div class="meta-label">Duration</div>
+            <div class="meta-value">90 Days</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Format</div>
+            <div class="meta-value">1:1 via Zoom</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Sessions</div>
+            <div class="meta-value">12 Private Sessions</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Ideal For</div>
+            <div class="meta-value">Individuals & Entrepreneurs</div>
+          </div>
+        </div>
+
+        <div class="program-detail reveal">
+          <p>The Ignite Intensive is the most immersive way to work together. Over 90 days we go deep — mapping your neural blueprint, dismantling what's keeping you stuck, and building new patterns that align with your goals.</p>
+          <p>This isn't a quick fix. It's a complete rewiring — designed for people who are serious about permanent change and ready to do the inner work.</p>
+        </div>
+
+        <div class="includes-title reveal">What's included</div>
+        <ul class="includes-list reveal">
+          <li>12 private 60-minute coaching sessions</li>
+          <li>Personalised neural blueprint assessment</li>
+          <li>Custom brain-state tracking & progress reports</li>
+          <li>Neural rewiring protocols tailored to your patterns</li>
+          <li>Unlimited voice/email support between sessions</li>
+          <li>Lifetime access to the Ignite resource library</li>
+          <li>30-day post-program integration support</li>
+        </ul>
+        <a href="contact.html" class="program-cta reveal">Apply for This Program</a>
+      </div>
+      <div class="reveal">
+        <div class="program-photo-placeholder">
+          <div class="photo-icon">📷</div>
+          <div class="photo-note">Program image here</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MIND MASTERY CIRCLE -->
+  <div class="program-section" id="circle">
+    <div class="program-inner reverse">
+      <div>
+        <div class="program-label reveal">◈ Group Program</div>
+        <h2 class="program-heading reveal">Mind Mastery <em>Circle</em></h2>
+        <p class="program-tagline reveal">An 8-week group journey combining neurocoaching with the power of collective transformation.</p>
+
+        <div class="program-meta reveal">
+          <div class="meta-item">
+            <div class="meta-label">Duration</div>
+            <div class="meta-value">8 Weeks</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Format</div>
+            <div class="meta-value">Group via Zoom</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Sessions</div>
+            <div class="meta-value">8 Live Group Sessions</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Ideal For</div>
+            <div class="meta-value">Those Who Thrive in Community</div>
+          </div>
+        </div>
+
+        <div class="program-detail reveal">
+          <p>There's something powerful that happens when a group of people commit to change together. The Mind Mastery Circle brings the same neuroscience-backed tools as the 1:1 intensive into a shared container.</p>
+          <p>You'll be guided through the Ignite Framework alongside a small cohort — building accountability, shared momentum, and the kind of breakthroughs that happen when you're seen and supported by others on the same path.</p>
+        </div>
+
+        <div class="includes-title reveal">What's included</div>
+        <ul class="includes-list reveal">
+          <li>8 live group coaching sessions (90 minutes each)</li>
+          <li>Private community access for the full 8 weeks</li>
+          <li>Weekly accountability pods with fellow members</li>
+          <li>Guest neuroscience & performance experts</li>
+          <li>Full recorded session library</li>
+          <li>Weekly integration exercises & reflection prompts</li>
+          <li>Access to the Ignite resource library</li>
+        </ul>
+        <a href="contact.html" class="program-cta reveal">Join the Next Circle</a>
+      </div>
+      <div class="reveal">
+        <div class="program-photo-placeholder">
+          <div class="photo-icon">📷</div>
+          <div class="photo-note">Program image here</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXECUTIVE EDGE -->
+  <div class="program-section" id="executive">
+    <div class="program-inner">
+      <div>
+        <div class="program-label reveal">◉ Leadership</div>
+        <h2 class="program-heading reveal">Executive <em>Edge</em></h2>
+        <p class="program-tagline reveal">Brain-based performance coaching for executives, founders, and high-performers who demand more from themselves and their teams.</p>
+
+        <div class="program-meta reveal">
+          <div class="meta-item">
+            <div class="meta-label">Duration</div>
+            <div class="meta-value">6 Months</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Format</div>
+            <div class="meta-value">1:1 + Team Sessions</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Access</div>
+            <div class="meta-value">On-Demand Coaching</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Ideal For</div>
+            <div class="meta-value">Executives & Founders</div>
+          </div>
+        </div>
+
+        <div class="program-detail reveal">
+          <p>Leadership performance begins in the brain. The Executive Edge is a bespoke 6-month engagement designed for leaders who want to perform at their peak — with clarity, resilience, and presence — while also transforming the culture around them.</p>
+          <p>We work across your personal neural patterns and your leadership behaviours, creating changes that ripple through your team and organisation.</p>
+        </div>
+
+        <div class="includes-title reveal">What's included</div>
+        <ul class="includes-list reveal">
+          <li>Bespoke 6-month 1:1 coaching engagement</li>
+          <li>360° leadership brain profiling & debrief</li>
+          <li>Weekly private coaching sessions</li>
+          <li>On-demand coaching access (voice/text)</li>
+          <li>Team neuroscience workshops (up to 2 included)</li>
+          <li>Strategic performance roadmap & quarterly reviews</li>
+          <li>Stress & resilience nervous system protocols</li>
+          <li>Priority scheduling & direct line access</li>
+        </ul>
+        <a href="contact.html" class="program-cta reveal">Enquire About Executive Edge</a>
+      </div>
+      <div class="reveal">
+        <div class="program-photo-placeholder">
+          <div class="photo-icon">📷</div>
+          <div class="photo-note">Program image here</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq-section">
+    <h2 class="reveal">Common <em>questions</em></h2>
+    <div class="faq-grid">
+      <div class="faq-item reveal">
+        <div class="faq-q">How do I know which program is right for me?</div>
+        <div class="faq-a">Book a free discovery call and we'll figure it out together. Every client is different — the right program depends on your goals, timeline, and how you work best.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Do sessions take place online or in person?</div>
+        <div class="faq-a">All sessions are held online via Zoom, making it accessible from anywhere in the world with a stable connection.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">How quickly will I see results?</div>
+        <div class="faq-a">Most clients notice shifts within the first few sessions. Lasting neurological change typically takes consistent work over 8–12 weeks — which is exactly what these programs are designed to deliver.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Is this therapy or coaching?</div>
+        <div class="faq-a">Neurocoaching is not therapy. We work forward-focused on goals, patterns, and performance — not diagnosis or treatment of mental health conditions. If you're unsure, the discovery call is a great place to ask.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">What if I need to reschedule a session?</div>
+        <div class="faq-a">Life happens. Sessions can be rescheduled with 24 hours notice. Flexibility is built into every program to accommodate real life.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Are payment plans available?</div>
+        <div class="faq-a">Yes — all programs offer flexible payment options. We'll discuss what works for you on the discovery call.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-strip">
+    <h2 class="reveal">Not sure where<br>to <em>start?</em></h2>
+    <p class="reveal">Book a free 30-minute discovery call. We'll talk through your goals and find the right fit — no pressure, no commitment.</p>
+    <a href="contact.html" class="btn-primary reveal">Book a Free Discovery Call</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo"><img src="flame-logo.svg" alt="Ignite Neurocoaching" style="height:70px;mix-blend-mode:screen;opacity:0.92;"></a>
+      <p>Science-backed coaching that creates lasting transformation at the neurological level.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Programs</h5>
+      <ul>
+        <li><a href="#intensive">Ignite Intensive</a></li>
+        <li><a href="#circle">Mind Mastery Circle</a></li>
+        <li><a href="#executive">Executive Edge</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="about.html">About</a></li>
+        <li><a href="index.html#method">The Method</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Connect</h5>
+      <ul>
+        <li><a href="contact.html">Discovery Call</a></li>
+        <li><a href="mailto:daradouma@hotmail.com">daradouma@hotmail.com</a></li>
+      </ul>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <p>© 2026 Ignite Neurocoaching. All rights reserved.</p>
+    <p style="color: var(--accent); font-size: 0.75rem; letter-spacing: 0.1em;">REWIRE · IGNITE · TRANSFORM</p>
+  </div>
+
+</div>
+
+<script>
+  /* VORTEX */
+  (function() {
+    const canvasEl = document.getElementById('vortex-canvas');
+    const gl = canvasEl.getContext('webgl') || canvasEl.getContext('experimental-webgl');
+    if (!gl) return;
+    const vsSource = `precision mediump float; attribute vec2 a_position; varying vec2 vUv; void main() { vUv = .5 * (a_position + 1.); gl_Position = vec4(a_position, 0.0, 1.0); }`;
+    const fsSource = `
+      precision mediump float;
+      varying vec2 vUv;
+      uniform float u_time; uniform float u_ratio; uniform vec2 u_pointer_position; uniform float u_scroll_progress;
+      vec2 rotate(vec2 uv, float th) { return mat2(cos(th), sin(th), -sin(th), cos(th)) * uv; }
+      float neuro_shape(vec2 uv, float t, float p) {
+        vec2 sine_acc = vec2(0.); vec2 res = vec2(0.); float scale = 8.;
+        for (int j = 0; j < 15; j++) { uv = rotate(uv, 1.); sine_acc = rotate(sine_acc, 1.); vec2 layer = uv * scale + float(j) + sine_acc - t; sine_acc += sin(layer) + 2.4 * p; res += (.5 + .5 * cos(layer)) / scale; scale *= (1.2); }
+        return res.x + res.y;
+      }
+      void main() {
+        vec2 uv = .5 * vUv; uv.x *= u_ratio;
+        vec2 pointer = vUv - u_pointer_position; pointer.x *= u_ratio;
+        float p = clamp(length(pointer), 0., 1.); p = .5 * pow(1. - p, 2.);
+        float t = .001 * u_time; float noise = neuro_shape(uv, t, p);
+        noise = 1.2 * pow(noise, 3.); noise += pow(noise, 10.); noise = max(.0, noise - .5); noise *= (1. - length(vUv - .5));
+        vec3 color = vec3(0.91, 0.29, 0.18);
+        color = mix(color, vec3(0.95, 0.58, 0.05), 0.32 + 0.16 * sin(2.0 * u_scroll_progress + 1.2));
+        color += vec3(0.50, 0.06, 0.0) * sin(2.0 * u_scroll_progress + 1.5);
+        color = color * noise; gl_FragColor = vec4(color, noise);
+      }`;
+    function cs(gl,src,type){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);return s;}
+    const vs=cs(gl,vsSource,gl.VERTEX_SHADER), fs=cs(gl,fsSource,gl.FRAGMENT_SHADER);
+    const prog=gl.createProgram(); gl.attachShader(prog,vs); gl.attachShader(prog,fs); gl.linkProgram(prog); gl.useProgram(prog);
+    const buf=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,buf); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    const pos=gl.getAttribLocation(prog,'a_position'); gl.enableVertexAttribArray(pos); gl.vertexAttribPointer(pos,2,gl.FLOAT,false,0,0);
+    const uTime=gl.getUniformLocation(prog,'u_time'), uRatio=gl.getUniformLocation(prog,'u_ratio'), uPtr=gl.getUniformLocation(prog,'u_pointer_position'), uScroll=gl.getUniformLocation(prog,'u_scroll_progress');
+    const ptr={x:.5,y:.5,tX:.5,tY:.5};
+    function resize(){const d=Math.min(window.devicePixelRatio,2);canvasEl.width=window.innerWidth*d;canvasEl.height=window.innerHeight*d;gl.viewport(0,0,canvasEl.width,canvasEl.height);gl.uniform1f(uRatio,canvasEl.width/canvasEl.height);}
+    resize(); window.addEventListener('resize',resize);
+    window.addEventListener('pointermove',e=>{ptr.tX=e.clientX/window.innerWidth;ptr.tY=e.clientY/window.innerHeight;});
+    gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
+    function render(){ptr.x+=(ptr.tX-ptr.x)*.2;ptr.y+=(ptr.tY-ptr.y)*.2;gl.uniform1f(uTime,performance.now());gl.uniform2f(uPtr,ptr.x,1-ptr.y);gl.uniform1f(uScroll,window.scrollY/(2*window.innerHeight));gl.drawArrays(gl.TRIANGLE_STRIP,0,4);requestAnimationFrame(render);}
+    render();
+  })();
+
+  /* REVEAL */
+  document.querySelectorAll('.reveal').forEach(el => {
+    new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), 80); } });
+    }, { threshold: 0.1 }).observe(el);
+  });
+</script>
+</body>
+</html>
