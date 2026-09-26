@@ -484,12 +484,12 @@
       <div class="form-left">
         <div class="form-left-text">
           <h2 class="reveal">Let's <em>talk</em></h2>
-          <p class="reveal">The first step is simple. Reach out and let me know what's going on. We'll have a quick conversation to make sure this is the right fit. No pressure. No sales pitch.</p>
+          <p class="reveal">The first step is simple. Sign up for the wait list. I'll reach out before the next cohort begins, and offer you a quick conversation to make sure this is the right fit. No pressure. No sales pitch.</p>
         </div>
         <div class="contact-details">
           <div class="contact-detail reveal">
-            <div class="detail-icon">⏱</div>
-            I'll get back to you within 48 hours
+            <div class="detail-icon">✍️</div>
+            Sign up for the waitlist.
           </div>
           <div class="contact-detail reveal">
             <div class="detail-icon">📞</div>
@@ -501,7 +501,7 @@
           </div>
           <div class="contact-detail reveal">
             <div class="detail-icon">✉️</div>
-            <a href="mailto:daradouma@hotmail.com" style="color: var(--muted); text-decoration: none;">daradouma@hotmail.com</a>
+            <a href="mailto:dara@igniteneurocoaching.com" style="color: var(--muted); text-decoration: none;">dara@igniteneurocoaching.com</a>
           </div>
         </div>
       </div>
@@ -511,28 +511,28 @@
         <div class="form-row">
           <div class="form-field">
             <label>First Name</label>
-            <input type="text" placeholder="Your first name" required>
+            <input type="text" id="firstName" placeholder="Your first name" required>
           </div>
           <div class="form-field">
             <label>Last Name</label>
-            <input type="text" placeholder="Your last name" required>
+            <input type="text" id="lastName" placeholder="Your last name" required>
           </div>
         </div>
         <div class="form-field">
           <label>Email Address</label>
-          <input type="email" placeholder="your@email.com" required>
+          <input type="email" id="email" placeholder="your@email.com" required>
         </div>
         <div class="form-field">
           <label>Phone (optional)</label>
-          <input type="tel" placeholder="Your phone number">
+          <input type="tel" id="phone" placeholder="Your phone number">
         </div>
         <div class="form-field">
           <label>What brings you here?</label>
-          <textarea placeholder="A few words about what you're dealing with..."></textarea>
+          <textarea id="message" placeholder="A few words about what you're dealing with..."></textarea>
         </div>
         <div class="form-field">
           <label>Preferred way to connect</label>
-          <select>
+          <select id="preferredContact">
             <option value="">Select one...</option>
             <option>Phone call</option>
             <option>Email</option>
@@ -541,9 +541,10 @@
         </div>
         <div class="form-field">
           <label>Best times to reach you</label>
-          <input type="text" placeholder="e.g. weekday mornings, weekend afternoons...">
+          <input type="text" id="bestTimes" placeholder="e.g. weekday mornings, weekend afternoons...">
         </div>
         <button type="submit" class="form-submit">Reach Out</button>
+        <p id="form-error" style="display:none; color: var(--accent); font-size: 0.82rem; margin-top: 12px;">Something went wrong sending your message. Please email dara@igniteneurocoaching.com directly, or try again.</p>
       </form>
       </div>
     </div>
@@ -556,8 +557,8 @@
     <div class="next-steps">
       <div class="next-step reveal">
         <div class="step-num">Step 1</div>
-        <div class="step-title">I'll get back to you</div>
-        <p>Within 48 hours. We'll set up a time to talk, usually a 20–30 minute conversation.</p>
+        <div class="step-title">You're on the waitlist</div>
+        <p>I'll reach out to you before the next cohort begins, and offer you a time to talk, usually a 20–30 minute conversation.</p>
       </div>
       <div class="next-step reveal">
         <div class="step-num">Step 2</div>
@@ -597,7 +598,7 @@
       <h5 style="font-size:0.7rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--text);margin-bottom:20px;">Connect</h5>
       <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
         <li><a href="contact.html" style="font-size:0.85rem;color:var(--muted);text-decoration:none;">Work With Me</a></li>
-        <li><a href="mailto:daradouma@hotmail.com" style="font-size:0.85rem;color:var(--muted);text-decoration:none;">daradouma@hotmail.com</a></li>
+        <li><a href="mailto:dara@igniteneurocoaching.com" style="font-size:0.85rem;color:var(--muted);text-decoration:none;">dara@igniteneurocoaching.com</a></li>
       </ul>
     </div>
   </footer>
@@ -661,13 +662,42 @@
     document.querySelector('.nav-links').classList.toggle('open');
   });
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    const btn = e.target.querySelector('.form-submit');
-    btn.textContent = '✓ Message Received!';
-    btn.style.background = '#c73d24';
+    const form = e.target;
+    const btn = form.querySelector('.form-submit');
+    const errorEl = document.getElementById('form-error');
+    errorEl.style.display = 'none';
     btn.disabled = true;
-    setTimeout(() => { btn.textContent = 'Reach Out'; btn.style.background = ''; btn.disabled = false; e.target.reset(); }, 3000);
+    const originalText = btn.textContent;
+    btn.textContent = 'Sending...';
+
+    const payload = {
+      firstName: document.getElementById('firstName').value,
+      lastName: document.getElementById('lastName').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
+      message: document.getElementById('message').value,
+      preferredContact: document.getElementById('preferredContact').value,
+      bestTimes: document.getElementById('bestTimes').value,
+    };
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error('Request failed');
+
+      btn.textContent = '✓ Message Received!';
+      btn.style.background = '#c73d24';
+      setTimeout(() => { btn.textContent = originalText; btn.style.background = ''; btn.disabled = false; form.reset(); }, 3000);
+    } catch (err) {
+      btn.textContent = originalText;
+      btn.disabled = false;
+      errorEl.style.display = 'block';
+    }
   }
 </script>
 </body>

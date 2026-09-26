@@ -325,6 +325,69 @@
       transform: translateY(-2px);
       box-shadow: 0 12px 40px rgba(232,74,46,0.25);
     }
+    /* LITTLE SPARKS SECTION */
+    .sparks-section {
+      padding: 100px 60px;
+      background: var(--bg2);
+    }
+    .sparks-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .sparks-left h2 {
+      font-family: 'Milanello', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      text-transform: uppercase;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+    .sparks-left h2 em { font-style: italic; color: var(--accent); }
+    .sparks-left .tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 5px 14px;
+      margin-bottom: 28px;
+    }
+    .sparks-left .subhead {
+      font-size: 1rem;
+      color: var(--accent);
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      margin-bottom: 28px;
+    }
+    .sparks-left p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 16px;
+    }
+    .sparks-left .btn-primary {
+      display: inline-block;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--accent);
+      padding: 15px 36px;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .sparks-left .btn-primary:hover {
+      background: var(--accent2);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(232,74,46,0.25);
+    }
+
     .btn-outline {
       display: inline-block;
       font-size: 0.82rem;
@@ -438,6 +501,9 @@
       .speaking-inner { grid-template-columns: 1fr; gap: 40px; }
       .outcomes-list { gap: 8px; }
 
+      .sparks-section { padding: 60px 24px; }
+      .sparks-inner { grid-template-columns: 1fr; gap: 40px; }
+
       footer { grid-template-columns: 1fr 1fr; gap: 36px; padding: 40px 24px; }
       .footer-brand { grid-column: 1 / -1; }
       .footer-bottom { padding: 16px 24px; flex-direction: column; gap: 8px; text-align: center; }
@@ -477,11 +543,11 @@
         <span class="tag reveal">Individual Coaching</span>
         <h2 class="reveal">The Resilience <em>Package</em></h2>
         <p class="subhead reveal">Six sessions. One workbook. Real, usable skills.</p>
-        <p class="reveal">The Resilience Package is designed specifically for firefighters, paramedics, cops, and other first responders who want to strengthen their nervous system and build the skills to stay sharp before crisis hits.</p>
+        <p class="reveal">The Resilience Package is designed specifically for firefighters, paramedics, police officers, and other first responders who want to strengthen their nervous system and build the skills to stay sharp before crisis hits.</p>
         <p class="reveal">Each session builds on the last. We start by understanding how your nervous system actually responds to the job. Then we move into practical training: skills and drills you can use in real life, on shift, and at home. By the end of six sessions, you've got a system and you know how to use it.</p>
         <p class="reveal">After six sessions, you decide what's next. Some people are ready to run with it on their own. Some want to go deeper with therapy. I can connect you with trauma-informed therapists who get the first responder world. Either way, you're in control.</p>
         <br>
-        <a href="contact.html#lets-talk" class="btn-primary reveal">Book a Consultation Call</a>
+        <a href="contact.html#lets-talk" class="btn-primary reveal">Join the Waitlist</a>
       </div>
       <div class="includes-card reveal">
         <h3>What's included</h3>
@@ -509,7 +575,7 @@
         <h2 class="reveal">Speaking &amp;<br><em>Workshops</em></h2>
         <p class="subhead reveal">Real nervous system education for real teams.</p>
         <p class="reveal">Repeated exposure to traumatic stress changes our brains and our bodies. Whether you're leading a team, teaching a classroom, or supporting a workplace, understanding that science changes everything.</p>
-        <p class="reveal">I take the neuroscience and translate it into plain language that people can actually use. Every workshop is customizable to your context.</p>
+        <p class="reveal">I take the neuroscience and translate it into plain language that people can actually use. Every workshop and keynote is customizable to your context.</p>
         <p class="outcomes-label reveal">What your team leaves with</p>
         <div class="outcomes-list reveal">
           <span>Understand how stress affects the brain and body</span>
@@ -528,10 +594,40 @@
           <li>Felt Safety in the Classroom: A Trauma-Informed Approach</li>
           <li>Traumatic Stress: Tools and Tips for Lawyers</li>
           <li>Felt Safety at Home: A Trauma-Informed Parenting Approach</li>
+          <li>Felt Safety in Medicine: Tools and Tips for Healthcare Teams</li>
         </ul>
         <div class="who-its-for">
           <h4>Who it's for</h4>
-          <p>Fire departments, workplaces, schools, legal teams, and families who want to understand how stress affects the brain and body and build practical tools to respond differently.</p>
+          <p>First responders, workplaces, healthcare professionals, schools, legal teams, and families who want to understand how stress affects the brain and body, and build practical tools to respond differently.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE LITTLE SPARKS PACKAGE -->
+  <div class="sparks-section" id="little-sparks">
+    <div class="sparks-inner">
+      <div class="sparks-left">
+        <span class="tag reveal">Parent Coaching</span>
+        <h2 class="reveal">The Little Sparks <em>Package</em></h2>
+        <p class="subhead reveal">Support for first responder families.</p>
+        <p class="reveal">The coaching package designed specifically for families of first responders who have completed the Resilience package. Because if it's not going well in your nervous system, it's probably not feeling great at home.</p>
+        <p class="reveal">We start by understanding what's going on at home for you, and we work together to figure things out from a neurorelational framework. Together, we'll make a personalized plan, specific to your family.</p>
+        <p class="reveal">If frazzled nervous systems are getting in the way of home life with your kids, this confidential coaching is the breath of nervous system support your home life was looking for. Bring connection, co-regulation, and felt safety back to your parenting again.</p>
+        <br>
+        <a href="contact.html#lets-talk" class="btn-primary reveal">Sign Up</a>
+      </div>
+      <div class="includes-card reveal">
+        <h3>What's included</h3>
+        <ul class="includes-list">
+          <li>Four parent sessions (in-person or online)</li>
+          <li>Refresher of nervous system basics, polyvagal theory, and emotional regulation</li>
+          <li>Trauma-informed practical tools, tailored strategies, and nervous system support for you and your family</li>
+          <li>Optional therapist referrals to child-centred therapists with a trauma-informed understanding of first responder nervous systems</li>
+        </ul>
+        <div class="who-its-for">
+          <h4>Who it's for</h4>
+          <p>Families of first responders who have completed the Resilience package, and need a little help finding connection, co-regulation, and felt safety in their parenting again.</p>
         </div>
       </div>
     </div>
@@ -548,6 +644,7 @@
       <ul>
         <li><a href="services.html">The Resilience Package</a></li>
         <li><a href="services.html#speaking">Speaking & Consulting</a></li>
+        <li><a href="services.html#little-sparks">The Little Sparks Package</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -561,7 +658,7 @@
       <h5>Connect</h5>
       <ul>
         <li><a href="contact.html">Work With Me</a></li>
-        <li><a href="mailto:daradouma@hotmail.com">daradouma@hotmail.com</a></li>
+        <li><a href="mailto:dara@igniteneurocoaching.com">dara@igniteneurocoaching.com</a></li>
       </ul>
     </div>
   </footer>
